@@ -1,0 +1,43 @@
+---
+title: "Forecast of COVID cases"
+author: "Saif Ul Mehdi"
+date: "September 1, 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Loading libraries
+
+```{r}
+suppressWarnings(suppressPackageStartupMessages(library(forecast)))
+```
+
+## Loading Datasets
+
+```{r}
+df1 = read.csv('COVID.csv',row.names=1)
+df2 = read.csv('ts_covid.csv',row.names=1)
+df3 = read.csv('ghmc_covid.csv',row.names=1)
+```
+
+## Forecasting
+
+```{r}
+mdl1 = auto.arima(df1$Daily.Cases)
+mdl2 = auto.arima(df2$Daily.cases)
+mdl3 = auto.arima(df3$Daily.Cases)
+future1 = forecast(mdl1,h=30,level=95)
+future2 = forecast(mdl2,h=30,level=95)
+future3 = forecast(mdl3,h=30,level=95)
+```
+
+## Plots
+
+```{r echo=FALSE}
+plot(future1,main='Forecast of COVID cases in India\n until 29th September')
+plot(future2,main='Forecast of COVID cases in Telangana\n until 29th September')
+plot(future3,main='Forecast of COVID cases in GHMC\n until 29th September')
+```
